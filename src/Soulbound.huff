@@ -1,2 +1,125 @@
+/// @title Soulbound
+/// @author PraneshASP
+
  
-#define macro MAIN() = takes (0) returns (0) {}
+/* Interface */
+#define function name() nonpayable returns (string)
+#define function symbol() nonpayable returns (string)
+#define function tokenURI(uint256) nonpayable returns (string)
+#define function owner() view returns (address)
+
+
+/* Storage */
+#define constant OWNER_SLOT = FREE_STORAGE_POINTER()
+#define constant NAME_SLOT = FREE_STORAGE_POINTER()
+#define constant SYMBOL_SLOT =  FREE_STORAGE_POINTER()
+#define constant TOKEN_URI_SLOT =  FREE_STORAGE_POINTER()
+
+
+/* Constructor */
+#define macro CONSTRUCTOR() = takes(0) returns (0) {
+    // Copy the owner into memory
+    0x20                        // [size] - byte size to copy
+    0x20 codesize sub           // [offset, size] - offset in the code to copy from
+    0x00                        // [mem, offset, size] - offset in memory to copy to
+    codecopy                    // []
+    0x00 mload                  // [owner]    
+    [OWNER_SLOT] sstore               
+
+
+     // Copy the token_uri into memory
+    0x20                        // [size, owner] - byte size to copy
+    0x40 codesize sub           // [offset, size, owner] - offset in the code to copy from
+    0x00                        // [mem, offset, size, owner] - offset in memory to copy to
+    codecopy                    // [owner]
+    0x00 mload                  // [token_uri, owner]
+    [TOKEN_URI_SLOT] sstore
+
+
+    // Copy the symbol into memory
+    0x20                        // [size, token_uri, owner] - byte size to copy
+    0x60 codesize sub           // [offset, size, token_uri, owner] - offset in the code to copy from
+    0x00                        // [mem, offset, size, token_uri, owner] - offset in memory to copy to
+    codecopy                    // [token_uri, owner]
+    0x00 mload                  // [symbol, token_uri, owner]
+    [SYMBOL_SLOT] sstore
+
+    // Copy the name into memory
+    0x20                        // [size, symbol, token_uri, owner] - byte size to copy
+    0x80 codesize sub           // [offset, size, symbol, token_uri, owner] - offset in the code to copy from
+    0x00                        // [mem, offset, size, symbol, token_uri, owner] - offset in memory to copy to
+    codecopy                    // [symbol, token_uri, owner]
+    0x00 mload                  // [name, symbol, token_uri, owner]
+    [NAME_SLOT] sstore
+}
+
+
+/* Helpers */
+#define macro ADDRESS_MASK() = takes (1) returns (1) {
+	0x000000000000000000000000ffffffffffffffffffffffffffffffffffffffff
+	and
+}
+
+
+ /* View Methods */
+#define macro GET_NAME() = takes (0) returns (0) {
+    [NAME_SLOT] sload            // [name]
+    0x00 mstore                  // []   
+    0x20 0x00 return             // []   
+}
+
+
+#define macro GET_SYMBOL() = takes (0) returns (0) {
+    [SYMBOL_SLOT] sload           // [symbol]      
+    0x00 mstore                   // [] 
+    0x20 0x00 return              // []     
+}
+
+/// [Note to self]: Incorrect implementation
+/// TOKEN_URI will exceed 32 bytes. Need to update this method
+/// @dev Returns TokenURI only if token_id is 0
+#define macro TOKEN_URI() = takes (0) returns (0) {
+    0x04 calldataload              // [token_id] 
+    0x0                            // [0, token_id]         
+    eq return_uri jumpi            // [result]  - if token_id is 0 then result=1 else result=0 
+    0x00 0x00 revert
+
+    return_uri:
+    [TOKEN_URI_SLOT] sload         // [token_uri, result]   
+    0x00 mstore                    // [result]
+    0x20 0x00 return               // [result]
+}
+
+
+#define macro GET_OWNER() = takes (0) returns (0) {
+    [OWNER_SLOT] sload ADDRESS_MASK() // [owner]
+    0x00 mstore                       // []  
+    0x20 0x00 return                  //  
+}
+
+
+/* Function Dispatcher */
+ #define macro MAIN() = takes (0) returns (0) {
+    // Identify which function is being called.
+    0x00 calldataload 0xe0 shr
+    dup1 __FUNC_SIG(name) eq get_name jumpi
+    dup1 __FUNC_SIG(symbol) eq get_symbol jumpi
+    dup1 __FUNC_SIG(tokenURI) eq token_uri jumpi
+    dup1 __FUNC_SIG(owner) eq get_owner jumpi
+
+    // Revert if none of the above matches
+    0x00 0x00 revert
+
+    get_name:
+       GET_NAME()
+
+    get_symbol:
+       GET_SYMBOL()   
+
+    token_uri:
+       TOKEN_URI() 
+    
+    get_owner:
+       GET_OWNER()
+ 
+}
