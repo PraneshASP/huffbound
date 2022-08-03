@@ -16,6 +16,44 @@
 #define constant TOKEN_URI_SLOT =  FREE_STORAGE_POINTER()
 
 
+/* Constructor */
+#define macro CONSTRUCTOR() = takes(0) returns (0) {
+    // Copy the owner into memory
+    0x20                        // [size] - byte size to copy
+    0x20 codesize sub           // [offset, size] - offset in the code to copy from
+    0x00                        // [mem, offset, size] - offset in memory to copy to
+    codecopy                    // []
+    0x00 mload                  // [owner]    
+    [OWNER_SLOT] sstore               
+
+
+     // Copy the token_uri into memory
+    0x20                        // [size, owner] - byte size to copy
+    0x40 codesize sub           // [offset, size, owner] - offset in the code to copy from
+    0x00                        // [mem, offset, size, owner] - offset in memory to copy to
+    codecopy                    // [owner]
+    0x00 mload                  // [token_uri, owner]
+    [TOKEN_URI_SLOT] sstore
+
+
+    // Copy the symbol into memory
+    0x20                        // [size, token_uri, owner] - byte size to copy
+    0x60 codesize sub           // [offset, size, token_uri, owner] - offset in the code to copy from
+    0x00                        // [mem, offset, size, token_uri, owner] - offset in memory to copy to
+    codecopy                    // [token_uri, owner]
+    0x00 mload                  // [symbol, token_uri, owner]
+    [SYMBOL_SLOT] sstore
+
+    // Copy the name into memory
+    0x20                        // [size, symbol, token_uri, owner] - byte size to copy
+    0x80 codesize sub           // [offset, size, symbol, token_uri, owner] - offset in the code to copy from
+    0x00                        // [mem, offset, size, symbol, token_uri, owner] - offset in memory to copy to
+    codecopy                    // [symbol, token_uri, owner]
+    0x00 mload                  // [name, symbol, token_uri, owner]
+    [NAME_SLOT] sstore
+}
+
+
 
 
 
