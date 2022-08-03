@@ -10,7 +10,7 @@ A **Soulbound** token implementation using [**Huff**](https://docs.huff.sh).
  
 ## What?
 
-In a nutshell, **Soulbound** tokens are non-transferrable NFTs. According to [Vitalik](https://vitalik.ca/general/2022/01/26/soulbound.html), A soulbound item, once picked up, cannot be transferred or sold to another player.While transferable NFTs have their place and can be really valuable on their own for supporting artists and charities, there is also a large and underexplored design space of what non-transferable NFTs could become.
+In a nutshell, **Soulbound** tokens are non-transferrable NFTs. According to [Vitalik](https://vitalik.ca/general/2022/01/26/soulbound.html), A soulbound item, once picked up, cannot be transferred or sold to another account.While transferable NFTs have their place and can be really valuable on their own for supporting artists and charities, there is also a large and underexplored design space of what non-transferable NFTs could become.
 
 ## How does it work?
 
