@@ -1,2 +1,21 @@
+/// @title Soulbound
+/// @author PraneshASP
+
  
-#define macro MAIN() = takes (0) returns (0) {}
+/* Interface */
+#define function name() nonpayable returns (string)
+#define function symbol() nonpayable returns (string)
+#define function tokenURI(uint256) nonpayable returns (string)
+#define function owner() view returns (address)
+
+
+/* Storage */
+#define constant OWNER_SLOT = FREE_STORAGE_POINTER()
+#define constant NAME_SLOT = FREE_STORAGE_POINTER()
+#define constant SYMBOL_SLOT =  FREE_STORAGE_POINTER()
+#define constant TOKEN_URI_SLOT =  FREE_STORAGE_POINTER()
+
+
+
+
+
