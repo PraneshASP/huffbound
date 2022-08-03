@@ -17,6 +17,8 @@ interface Huffbound {
     function balanceOf(address) external view returns (uint256);
 
     function isApprovedForAll(address, address) external view returns (bool);
+
+    function mint(address, uint256) external;
 }
 
 contract HuffboundTest is Test {
@@ -88,5 +90,10 @@ contract HuffboundTest is Test {
 
     function testIsApprovedForAll() public {
         assertEq(sut.isApprovedForAll(address(this), msg.sender), false);
+    }
+
+    function testMint_ShouldRevert() public {
+        vm.expectRevert("SOULBOUND");
+        sut.mint(msg.sender, 10);
     }
 }
