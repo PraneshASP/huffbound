@@ -1,19 +1,13 @@
-<center><h1> Huffbound <img align="center" width="70" height="70" top="100" src="./assets/logo.png">
-</h1></center>
-<center>
+ <img align="right" width="150" height="150" top="100" src="./assets/logo.png">
 
-[![ci](https://github.com/PraneshASP/huffbound/actions/workflows/ci.yaml/badge.svg?branch=main)](https://github.com/PraneshASP/huffbound/actions/workflows/ci.yaml) [![license](https://img.shields.io/badge/Unlicense-blue.svg?label=license)](https://opensource.org/licenses/unlicense) ![solidity](https://img.shields.io/badge/solidity-%3E%3D0.8.13%20%3C0.9.0-lightgrey)
+# Huffbound • [![ci](https://github.com/PraneshASP/huffbound/actions/workflows/ci.yaml/badge.svg?branch=main)](https://github.com/PraneshASP/huffbound/actions/workflows/ci.yaml) [![license](https://img.shields.io/badge/Unlicense-blue.svg?label=license)](https://opensource.org/licenses/unlicense) ![solidity](https://img.shields.io/badge/solidity-%3E%3D0.8.13%20%3C0.9.0-lightgrey)
 
-</center>
-
-<center>
 <h3>
 
 A **Soulbound** token implementation using [**Huff**](https://docs.huff.sh).
 
-<h3>
-</center>
-
+</h3>
+ 
 ## What?
 
 In a nutshell, **Soulbound** tokens are non-transferrable NFTs. According to [Vitalik](https://vitalik.ca/general/2022/01/26/soulbound.html), A soulbound item, once picked up, cannot be transferred or sold to another player.While transferable NFTs have their place and can be really valuable on their own for supporting artists and charities, there is also a large and underexplored design space of what non-transferable NFTs could become.
@@ -26,7 +20,7 @@ Simple. During the deployment (scripts soon, wip) the `name`, `symbol`, `tokenUR
 
 ### Requirements
 
-The following will need to be installed in order to use this template. Please follow the links and instructions.
+The following will need to be installed in order to use this repo. Please follow the links and instructions.
 
 - [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
   - You'll know you've done it right if you can run `git --version`
