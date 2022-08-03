@@ -15,6 +15,8 @@ interface Huffbound {
     function owner() external view returns (address);
 
     function balanceOf(address) external view returns (uint256);
+
+    function isApprovedForAll(address, address) external view returns (bool);
 }
 
 contract HuffboundTest is Test {
@@ -82,5 +84,9 @@ contract HuffboundTest is Test {
         if (randomAddress != address(this))
             assertEq(sut.balanceOf(randomAddress), 0);
         else assertEq(sut.balanceOf(randomAddress), 1);
+    }
+
+    function testIsApprovedForAll() public {
+        assertEq(sut.isApprovedForAll(address(this), msg.sender), false);
     }
 }
