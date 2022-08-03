@@ -8,6 +8,7 @@
 #define function tokenURI(uint256) nonpayable returns (string)
 #define function owner() view returns (address)
 #define function balanceOf(address) view returns (uint256)
+#define function isApprovedForAll(address,address) view returns (bool)
 
 
 /* Storage */
@@ -113,6 +114,14 @@
         0x20 0x00 return                 // returns 1
 }
 
+///@dev Always returns false
+#define macro IS_APPROVED_FOR_ALL() = takes (0) returns (0) {
+    0x00                                  // [0]   
+    0x00 mstore                           // []  
+    0x20 0x00 return                      // []
+}
+ 
+
 
 
 /* Function Dispatcher */
@@ -124,6 +133,7 @@
     dup1 __FUNC_SIG(tokenURI) eq token_uri jumpi
     dup1 __FUNC_SIG(owner) eq get_owner jumpi
     dup1 __FUNC_SIG(balanceOf) eq balance_of jumpi
+    dup1 __FUNC_SIG(isApprovedForAll) eq is_approved_for_all jumpi
 
 
     // Revert if none of the above matches
@@ -144,5 +154,7 @@
     balance_of:
        BALANCE_OF()
 
+    is_approved_for_all:
+        IS_APPROVED_FOR_ALL()
  
 }
