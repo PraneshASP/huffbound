@@ -11,6 +11,8 @@ interface Huffbound {
     function symbol() external view returns (bytes32);
 
     function tokenURI(uint256) external view returns (bytes32);
+
+    function owner() external view returns (address);
 }
 
 contract HuffboundTest is Test {
@@ -60,5 +62,9 @@ contract HuffboundTest is Test {
     function testTokenURI() public {
         bytes memory tokenURI = bytes(uriString);
         assert(bytes32(abi.encodePacked(sut.tokenURI(0))) == bytes32(tokenURI));
+    }
+
+    function testOwner() public {
+        assertEq(sut.owner(), address(this));
     }
 }
