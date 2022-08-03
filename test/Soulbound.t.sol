@@ -96,4 +96,9 @@ contract HuffboundTest is Test {
         vm.expectRevert("SOULBOUND");
         sut.mint(msg.sender, 10);
     }
+
+    function testMint_fuzz(address _recipient, uint256 _tokenId) public {
+        vm.expectRevert("SOULBOUND");
+        sut.mint(_recipient, _tokenId);
+    }
 }
