@@ -108,9 +108,9 @@
     0x20 0x00 return                    // returns 0    
 
     return_one:
-        0x01                                // [1, is_owner_address]
-        0x00 mstore                         // [is_owner_address]
-        0x20 0x00 return                    // returns 1
+        0x01                             // [1, is_owner_address]
+        0x00 mstore                      // [is_owner_address]
+        0x20 0x00 return                 // returns 1
 }
 
 
