@@ -1,8 +1,24 @@
-/// @title Soulbound
+/*
+
+ooooo   ooooo              .o88o.  .o88o.  .o8                                               .o8  
+`888'   `888'              888 `"  888 `" "888                                              "888  
+ 888     888  oooo  oooo  o888oo  o888oo   888oooo.   .ooooo.  oooo  oooo  ooo. .oo.    .oooo888  
+ 888ooooo888  `888  `888   888     888     d88' `88b d88' `88b `888  `888  `888P"Y88b  d88' `888  
+ 888     888   888   888   888     888     888   888 888   888  888   888   888   888  888   888  
+ 888     888   888   888   888     888     888   888 888   888  888   888   888   888  888   888  
+o888o   o888o  `V88V"V8P' o888o   o888o    `Y8bod8P' `Y8bod8P'  `V88V"V8P' o888o o888o `Y8bod88P" 
+                                                                                                  
+                                                                                                                                                                                     
+*/
+
+/// @title Huffbound
 /// @author PraneshASP
+/// @notice An Implementation of a simple Soulbound token in Huff
+/// @dev The token will be tied to the Owner address passed during deployment
+/// @dev Once deployed the token cannot be transferred/approved. No state changing ops allowed in the contract
 
  
-/* Interface */
+/* Interfaces */
 #define function name() nonpayable returns (string)
 #define function symbol() nonpayable returns (string)
 #define function tokenURI(uint256) nonpayable returns (string)
