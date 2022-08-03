@@ -10,12 +10,22 @@
 #define function balanceOf(address) view returns (uint256)
 #define function isApprovedForAll(address,address) view returns (bool)
 
+#define function mint(address,uint256) nonpayable returns ()
+#define function transfer(address,uint256) nonpayable returns ()
+#define function transferFrom(address,address,uint256) nonpayable returns ()
+#define function approve(address,uint256) nonpayable returns ()
+#define function setApprovalForAll(address,bool) nonpayable returns ()
+#define function getApproved(uint256) view returns (address)
 
 /* Storage */
 #define constant OWNER_SLOT = FREE_STORAGE_POINTER()
 #define constant NAME_SLOT = FREE_STORAGE_POINTER()
 #define constant SYMBOL_SLOT =  FREE_STORAGE_POINTER()
 #define constant TOKEN_URI_SLOT =  FREE_STORAGE_POINTER()
+
+#define constant ERROR_SIG = 0x08c379a000000000000000000000000000000000000000000000000000000000
+#define constant REVERT_STRING = 0x534f554c424f554e440000000000000000000000000000000000000000000000
+#define constant REVERT_LENGTH = 0x09
 
 
 /* Constructor */
@@ -60,6 +70,32 @@
 #define macro ADDRESS_MASK() = takes (1) returns (1) {
 	0x000000000000000000000000ffffffffffffffffffffffffffffffffffffffff
 	and
+}
+
+#define macro REVERT() = takes (0) returns (0) {
+    [REVERT_STRING] // [message]
+    [REVERT_LENGTH] // [message_length, message]
+    0x00            // [false, message_length, message]
+    skip            // [skip_jumpdest, condition, message_length, message]
+    jumpi           // [message_length, message]
+    [ERROR_SIG]     // [error_sig, message_length, message]
+    0x00            // [mem_ptr, error_sig, message_length, message]
+    mstore          // [message_length, message]
+    0x20            // [message_offset, message_length, message]
+    0x04            // [message_offset_ptr, message_offset, message_length, message]
+    mstore          // [message_length, message]
+    0x24            // [message_length_ptr, message_length, message]
+    mstore          // [message]
+    0x44            // [message_ptr, message]
+    mstore          // []
+    0x80            // [size]
+    0x00            // [offset, size]
+    revert          // []
+
+     skip:          // [message_length, message]
+        pop         // [message]
+        pop         // []
+  
 }
 
 
@@ -134,6 +170,7 @@
     dup1 __FUNC_SIG(owner) eq get_owner jumpi
     dup1 __FUNC_SIG(balanceOf) eq balance_of jumpi
     dup1 __FUNC_SIG(isApprovedForAll) eq is_approved_for_all jumpi
+    dup1 __FUNC_SIG(mint) eq mint_token jumpi
 
 
     // Revert if none of the above matches
@@ -156,5 +193,8 @@
 
     is_approved_for_all:
         IS_APPROVED_FOR_ALL()
+    
+    mint_token:
+        REVERT()
  
 }
