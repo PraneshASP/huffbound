@@ -54,7 +54,36 @@
 }
 
 
+ /* View Methods */
+#define macro GET_NAME() = takes (0) returns (0) {
+    [NAME_SLOT] sload            // [name]
+    0x00 mstore                  // []   
+    0x20 0x00 return             // []   
+}
 
+
+#define macro GET_SYMBOL() = takes (0) returns (0) {
+    [SYMBOL_SLOT] sload           // [symbol]      
+    0x00 mstore                   // [] 
+    0x20 0x00 return              // []     
+}
+
+/// [Note to self]: Incorrect implementation
+/// TOKEN_URI will exceed 32 bytes. Need to update this method
+/// @dev Returns TokenURI only if token_id is 0
+#define macro TOKEN_URI() = takes (0) returns (0) {
+    0x04 calldataload              // [token_id] 
+    0x0                            // [0, token_id]         
+    eq return_uri jumpi            // [result]  - if token_id is 0 then result=1 else result=0 
+    0x00 0x00 revert
+
+    return_uri:
+    [TOKEN_URI_SLOT] sload         // [token_uri, result]   
+    0x00 mstore                    // [result]
+    0x20 0x00 return               // [result]
+}
+
+ 
 
 
 /* Function Dispatcher */
@@ -64,8 +93,7 @@
     dup1 __FUNC_SIG(name) eq get_name jumpi
     dup1 __FUNC_SIG(symbol) eq get_symbol jumpi
     dup1 __FUNC_SIG(tokenURI) eq token_uri jumpi
-    dup1 __FUNC_SIG(owner) eq get_owner jumpi
-
+ 
     // Revert if none of the above matches
     0x00 0x00 revert
 
@@ -77,9 +105,7 @@
 
     token_uri:
        TOKEN_URI() 
-    
-    get_owner:
-       GET_OWNER()
+     
  
  
 }
