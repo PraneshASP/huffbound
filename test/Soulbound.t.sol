@@ -17,6 +17,22 @@ interface Huffbound {
     function balanceOf(address) external view returns (uint256);
 
     function isApprovedForAll(address, address) external view returns (bool);
+
+    function mint(address, uint256) external;
+
+    function transfer(address, uint256) external;
+
+    function transferFrom(
+        address,
+        address,
+        uint256
+    ) external;
+
+    function approve(address, uint256) external;
+
+    function setApprovalForAll(address, bool) external;
+
+    function getApproved(uint256) external view returns (address);
 }
 
 contract HuffboundTest is Test {
@@ -88,5 +104,40 @@ contract HuffboundTest is Test {
 
     function testIsApprovedForAll() public {
         assertEq(sut.isApprovedForAll(address(this), msg.sender), false);
+    }
+
+    function testMint_ShouldRevert() public {
+        vm.expectRevert("SOULBOUND");
+        sut.mint(msg.sender, 10);
+    }
+
+    function testMint_fuzz(address _recipient, uint256 _tokenId) public {
+        vm.expectRevert("SOULBOUND");
+        sut.mint(_recipient, _tokenId);
+    }
+
+    function testTransfer_ShouldRevert() public {
+        vm.expectRevert("SOULBOUND");
+        sut.transfer(msg.sender, 10);
+    }
+
+    function testTransferFrom_ShouldRevert() public {
+        vm.expectRevert("SOULBOUND");
+        sut.transferFrom(address(this), msg.sender, 10);
+    }
+
+    function testApprove_ShouldRevert() public {
+        vm.expectRevert("SOULBOUND");
+        sut.approve(msg.sender, 10);
+    }
+
+    function testSetApprovalForAll_ShouldRevert() public {
+        vm.expectRevert("SOULBOUND");
+        sut.setApprovalForAll(msg.sender, true);
+    }
+
+    function testGetApproved_ShouldRevert() public {
+        vm.expectRevert("SOULBOUND");
+        sut.getApproved(10);
     }
 }
