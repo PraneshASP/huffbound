@@ -13,6 +13,8 @@ interface Huffbound {
     function tokenURI(uint256) external view returns (bytes32);
 
     function owner() external view returns (address);
+
+    function balanceOf(address) external view returns (uint256);
 }
 
 contract HuffboundTest is Test {
@@ -66,5 +68,13 @@ contract HuffboundTest is Test {
 
     function testOwner() public {
         assertEq(sut.owner(), address(this));
+    }
+
+    function testBalance() public {
+        /// Should return 1 if address is the owner address
+        assertEq(sut.balanceOf(address(this)), 1);
+
+        /// Should return 0 if address is not the owner address
+        assertEq(sut.balanceOf(address(0xdead)), 0);
     }
 }
