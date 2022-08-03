@@ -171,6 +171,11 @@
     dup1 __FUNC_SIG(balanceOf) eq balance_of jumpi
     dup1 __FUNC_SIG(isApprovedForAll) eq is_approved_for_all jumpi
     dup1 __FUNC_SIG(mint) eq mint_token jumpi
+    dup1 __FUNC_SIG(transfer) eq transfer_token jumpi
+    dup1 __FUNC_SIG(transferFrom) eq transfer_token_from jumpi
+    dup1 __FUNC_SIG(approve) eq approve_spender jumpi
+    dup1 __FUNC_SIG(setApprovalForAll) eq set_approval jumpi
+    dup1 __FUNC_SIG(getApproved) eq get_approved jumpi
 
 
     // Revert if none of the above matches
@@ -195,6 +200,21 @@
         IS_APPROVED_FOR_ALL()
     
     mint_token:
+        REVERT()
+        
+    transfer_token:
+        REVERT()  
+    
+    transfer_token_from:
+        REVERT()  
+    
+    approve_spender:
+        REVERT()  
+    
+    set_approval:
+        REVERT()  
+    
+    get_approved:
         REVERT()
  
 }
