@@ -77,4 +77,10 @@ contract HuffboundTest is Test {
         /// Should return 0 if address is not the owner address
         assertEq(sut.balanceOf(address(0xdead)), 0);
     }
+
+    function testBalance_fuzz(address randomAddress) public {
+        if (randomAddress != address(this))
+            assertEq(sut.balanceOf(randomAddress), 0);
+        else assertEq(sut.balanceOf(randomAddress), 1);
+    }
 }
