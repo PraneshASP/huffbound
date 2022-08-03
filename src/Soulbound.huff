@@ -54,6 +54,13 @@
 }
 
 
+/* Helpers */
+#define macro ADDRESS_MASK() = takes (1) returns (1) {
+	0x000000000000000000000000ffffffffffffffffffffffffffffffffffffffff
+	and
+}
+
+
  /* View Methods */
 #define macro GET_NAME() = takes (0) returns (0) {
     [NAME_SLOT] sload            // [name]
@@ -83,7 +90,12 @@
     0x20 0x00 return               // [result]
 }
 
- 
+
+#define macro GET_OWNER() = takes (0) returns (0) {
+    [OWNER_SLOT] sload ADDRESS_MASK() // [owner]
+    0x00 mstore                       // []  
+    0x20 0x00 return                  //  
+}
 
 
 /* Function Dispatcher */
@@ -93,7 +105,8 @@
     dup1 __FUNC_SIG(name) eq get_name jumpi
     dup1 __FUNC_SIG(symbol) eq get_symbol jumpi
     dup1 __FUNC_SIG(tokenURI) eq token_uri jumpi
- 
+    dup1 __FUNC_SIG(owner) eq get_owner jumpi
+
     // Revert if none of the above matches
     0x00 0x00 revert
 
@@ -105,7 +118,8 @@
 
     token_uri:
        TOKEN_URI() 
-     
- 
+    
+    get_owner:
+       GET_OWNER()
  
 }
