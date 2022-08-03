@@ -57,3 +57,29 @@
 
 
 
+/* Function Dispatcher */
+ #define macro MAIN() = takes (0) returns (0) {
+    // Identify which function is being called.
+    0x00 calldataload 0xe0 shr
+    dup1 __FUNC_SIG(name) eq get_name jumpi
+    dup1 __FUNC_SIG(symbol) eq get_symbol jumpi
+    dup1 __FUNC_SIG(tokenURI) eq token_uri jumpi
+    dup1 __FUNC_SIG(owner) eq get_owner jumpi
+
+    // Revert if none of the above matches
+    0x00 0x00 revert
+
+    get_name:
+       GET_NAME()
+
+    get_symbol:
+       GET_SYMBOL()   
+
+    token_uri:
+       TOKEN_URI() 
+    
+    get_owner:
+       GET_OWNER()
+ 
+ 
+}
