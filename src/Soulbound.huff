@@ -7,6 +7,7 @@
 #define function symbol() nonpayable returns (string)
 #define function tokenURI(uint256) nonpayable returns (string)
 #define function owner() view returns (address)
+#define function balanceOf(address) view returns (uint256)
 
 
 /* Storage */
@@ -97,6 +98,22 @@
     0x20 0x00 return                  //  
 }
 
+///@dev Returns 1 if address is owner address else returns 0
+#define macro BALANCE_OF() = takes (0) returns (0) {
+    0x04 calldataload                   // [address]
+    [OWNER_SLOT] sload ADDRESS_MASK()   // [owner, address]    
+    eq return_one jumpi                 // [is_owner_address]   
+    0x00                                // [0, is_owner_address]
+    0x00 mstore                         // [is_owner_address]
+    0x20 0x00 return                    // returns 0    
+
+    return_one:
+        0x01                                // [1, is_owner_address]
+        0x00 mstore                         // [is_owner_address]
+        0x20 0x00 return                    // returns 1
+}
+
+
 
 /* Function Dispatcher */
  #define macro MAIN() = takes (0) returns (0) {
@@ -106,6 +123,8 @@
     dup1 __FUNC_SIG(symbol) eq get_symbol jumpi
     dup1 __FUNC_SIG(tokenURI) eq token_uri jumpi
     dup1 __FUNC_SIG(owner) eq get_owner jumpi
+    dup1 __FUNC_SIG(balanceOf) eq balance_of jumpi
+
 
     // Revert if none of the above matches
     0x00 0x00 revert
@@ -121,5 +140,9 @@
     
     get_owner:
        GET_OWNER()
+
+    balance_of:
+       BALANCE_OF()
+
  
 }
