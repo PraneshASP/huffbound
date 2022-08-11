@@ -57,6 +57,19 @@ forge build
 forge test
 ```
 
+4. Deployment
+
+Create a `.env` file and copy the contents of `.env.examples` to it.
+Update the fields with relanvant values.
+
+To proceed with the deployment, run the following command...
+
+```shell
+source .env
+
+forge script scripts/Deploy.s.sol:Deploy --fork-url $INFURA_URL --private-key $PRIVATE_KEY --broadcast
+```
+
 For more information on how to use Foundry, check out the [Foundry Github Repository](https://github.com/foundry-rs/foundry/tree/master/forge) and the [foundry-huff library repository](https://github.com/huff-language/foundry-huff).
 
 ## Blueprint
@@ -87,7 +100,7 @@ test
 
 ## TODO
 
-- [ ] Deploy script
+- [x] Deploy script
 - [x] Implement `supportsInterface()`
 - [ ] Fix token_uri storage
 - [ ] Integrate ENS
