@@ -24,9 +24,11 @@ contract Deploy is Script {
             bytes32(uri),
             abi.encode(address(this))
         );
-        vm.startBroadcast();
-        huffbound = Huffbound(HuffDeployer.deploy_with_args("Soulbound", args));
-        vm.stopBroadcast();
+        //vm.startBroadcast();
+        huffbound = Huffbound(
+            HuffDeployer.broadcast_with_args("Soulbound", args)
+        );
+        //vm.stopBroadcast();
         console2.log("Huffbound contract deployed to: ", address(huffbound));
     }
 }
