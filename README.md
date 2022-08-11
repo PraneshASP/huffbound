@@ -88,7 +88,7 @@ test
 ## TODO
 
 - [ ] Deploy script
-- [ ] Implement `supportsInterface()`
+- [x] Implement `supportsInterface()`
 - [ ] Fix token_uri storage
 - [ ] Integrate ENS
 
