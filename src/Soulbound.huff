@@ -45,6 +45,11 @@ o888o   o888o  `V88V"V8P' o888o   o888o    `Y8bod8P' `Y8bod8P'  `V88V"V8P' o888o
 #define constant REVERT_LENGTH = 0x09
 
 
+#define constant IS_ERC165 = 0x01ffc9a7
+#define constant IS_ERC721 = 0x80ac58cd
+#define constant IS_ERC721_METADATA = 0x5b5e139f
+
+
 /* Constructor */
 #define macro CONSTRUCTOR() = takes(0) returns (0) {
     // Copy the owner into memory
@@ -167,7 +172,34 @@ o888o   o888o  `V88V"V8P' o888o   o888o    `Y8bod8P' `Y8bod8P'  `V88V"V8P' o888o
     0x20 0x00 return                      // []
 }
  
+#define macro SUPPORTS_INTERFACE() = takes (0) returns (0) {
+    // grab interfaceId
+    0x04 calldataload       // [interfaceId]
+    0xe0 
+    shr
 
+    // check if erc165 interfaceId
+    dup1                        // [interfaceId, interfaceId]
+    [IS_ERC165] eq              // [is_erc165, interfaceId]
+    is_interface jumpi
+
+    // check if erc721 interfaceId
+    dup1                        // [interfaceId, interfaceId]
+    [IS_ERC721] eq              // [is_erc721, interfaceId]
+    is_interface jumpi
+
+    // check if erc721Metadata interfaceId
+    [IS_ERC721_METADATA] eq     // [is_erc721Metadata]
+    is_interface jumpi
+
+    0x00 0x00 mstore                 // []
+    0x20 0x00 return            // []
+
+    is_interface:
+        pop                     // []
+        0x01 0x00 mstore        // []
+        0x20 0x00 return        // []
+}
 
 
 /* Function Dispatcher */
@@ -180,6 +212,8 @@ o888o   o888o  `V88V"V8P' o888o   o888o    `Y8bod8P' `Y8bod8P'  `V88V"V8P' o888o
     dup1 __FUNC_SIG(owner) eq get_owner jumpi
     dup1 __FUNC_SIG(balanceOf) eq balance_of jumpi
     dup1 __FUNC_SIG(isApprovedForAll) eq is_approved_for_all jumpi
+    dup1 __FUNC_SIG(supportsInterface) eq supports_interface jumpi
+
     dup1 __FUNC_SIG(mint) eq mint_token jumpi
     dup1 __FUNC_SIG(transfer) eq transfer_token jumpi
     dup1 __FUNC_SIG(transferFrom) eq transfer_token_from jumpi
@@ -208,6 +242,9 @@ o888o   o888o  `V88V"V8P' o888o   o888o    `Y8bod8P' `Y8bod8P'  `V88V"V8P' o888o
 
     is_approved_for_all:
         IS_APPROVED_FOR_ALL()
+    
+    supports_interface:
+        SUPPORTS_INTERFACE()
     
     mint_token:
         REVERT()
