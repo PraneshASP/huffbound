@@ -79,7 +79,7 @@ lib
 ├─ forge-std — https://github.com/foundry-rs/forge-std
 ├─ foundry-huff — https://github.com/huff-language/foundry-huff
 scripts
-├─ Deploy.s.sol — Deployment Script [WIP]
+├─ Deploy.s.sol — Deployment Script
 src
 ├─interfaces
     └─ IHuffbound.sol - The Huffbound interface for tests
