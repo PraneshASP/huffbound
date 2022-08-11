@@ -14,6 +14,8 @@ interface Huffbound {
 
     function isApprovedForAll(address, address) external view returns (bool);
 
+    function supportsInterface(bytes4) external view returns (bool);
+
     function mint(address, uint256) external;
 
     function transfer(address, uint256) external;
