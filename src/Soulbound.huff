@@ -88,12 +88,15 @@ o888o   o888o  `V88V"V8P' o888o   o888o    `Y8bod8P' `Y8bod8P'  `V88V"V8P' o888o
 	and
 }
 
+#define macro ADDRESS_MASK() = takes (1) returns (1) {
+	0x000000000000000000000000ffffffffffffffffffffffffffffffffffffffff
+	and
+}
+
+
 #define macro REVERT() = takes (0) returns (0) {
     [REVERT_STRING] // [message]
-    [REVERT_LENGTH] // [message_length, message]
-    0x00            // [false, message_length, message]
-    skip            // [skip_jumpdest, condition, message_length, message]
-    jumpi           // [message_length, message]
+    [REVERT_LENGTH] // [message_length, message]    
     [ERROR_SIG]     // [error_sig, message_length, message]
     0x00            // [mem_ptr, error_sig, message_length, message]
     mstore          // [message_length, message]
@@ -107,11 +110,6 @@ o888o   o888o  `V88V"V8P' o888o   o888o    `Y8bod8P' `Y8bod8P'  `V88V"V8P' o888o
     0x80            // [size]
     0x00            // [offset, size]
     revert          // []
-
-     skip:          // [message_length, message]
-        pop         // [message]
-        pop         // []
-  
 }
 
 
