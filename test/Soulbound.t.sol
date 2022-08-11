@@ -113,4 +113,17 @@ contract HuffboundTest is Test {
         vm.expectRevert("SOULBOUND");
         sut.getApproved(10);
     }
+
+    function testSupportsInterface() public {
+        // ERC721
+        assertTrue(sut.supportsInterface(bytes4(0x80ac58cd)));
+        // ERC721Metadata
+        assertTrue(sut.supportsInterface(bytes4(0x5b5e139f)));
+        // ERC165
+        assertTrue(sut.supportsInterface(bytes4(0x01ffc9a7)));
+        // mandated by ERC165 to be false
+        assertTrue(!sut.supportsInterface(bytes4(0xffffffff)));
+        // lastly, a random interface to be false
+        assertTrue(!sut.supportsInterface(bytes4(0xabcdef01)));
+    }
 }
